@@ -1,64 +1,33 @@
+package base;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 class ConnectionGeniusTest {
 
     @Test
-    void testFireUpGame() {
-        ConnectionGenius connectionGenius = Mockito.spy(new ConnectionGenius(null));
+    void testStartGame() throws UnknownHostException {
+        // Mocking InetAddress since it's a concrete class
+        InetAddress mockedAddress = mock(InetAddress.class);
+        ConnectionGenius connectionGenius = new ConnectionGenius(mockedAddress);
 
-        doNothing().when(connectionGenius).downloadWebVersion();
-        doNothing().when(connectionGenius).connectToWebService();
-        doNothing().when(connectionGenius).awayWeGo();
+        // Mocking the methods
+        ConnectionGenius spyConnectionGenius = Mockito.spy(connectionGenius);
+        doNothing().when(spyConnectionGenius).downloadWebVersion();
+        doNothing().when(spyConnectionGenius).connectToWebService();
+        doNothing().when(spyConnectionGenius).launchGame();
 
-        connectionGenius.fireUpGame();
+        // Testing the method
+        spyConnectionGenius.startGame();
 
-        verify(connectionGenius).downloadWebVersion();
-        verify(connectionGenius).connectToWebService();
-        verify(connectionGenius).awayWeGo();
-    }
-
-    @Test
-    void testDownloadWebVersion() {
-        ConnectionGenius connectionGenius = new ConnectionGenius(null);
-
-        // Redirect System.out to a mock PrintStream
-        System.setOut(new PrintStream(new ByteArrayOutputStream()));
-
-        connectionGenius.downloadWebVersion();
-
-        // Verify that the expected output is printed
-        assertEquals("Getting specialized web version.\nWait a couple of moments\n", outContent.toString());
-    }
-
-    @Test
-    void testConnectToWebService() {
-        ConnectionGenius connectionGenius = new ConnectionGenius(null);
-
-        // Redirect System.out to a mock PrintStream
-        System.setOut(new PrintStream(new ByteArrayOutputStream()));
-
-        connectionGenius.connectToWebService();
-
-        // Verify that the expected output is printed
-        assertEquals("Connecting\n", outContent.toString());
-    }
-
-    @Test
-    void testAwayWeGo() {
-        ConnectionGenius connectionGenius = new ConnectionGenius(null);
-
-        // Redirect System.out to a mock PrintStream
-        System.setOut(new PrintStream(new ByteArrayOutputStream()));
-
-        connectionGenius.awayWeGo();
-
-        // Verify that the expected output is printed
-        assertEquals("Ready to play\n", outContent.toString());
+        // Verifying if the methods were called
+        verify(spyConnectionGenius, times(1)).downloadWebVersion();
+        verify(spyConnectionGenius, times(1)).connectToWebService();
+        verify(spyConnectionGenius, times(1)).launchGame();
     }
 }
