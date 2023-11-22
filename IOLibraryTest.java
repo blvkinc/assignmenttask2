@@ -1,43 +1,40 @@
-import org.junit.jupiter.api.Test;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+package base;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.InetAddress;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class IOLibraryTest {
 
     @Test
-    void testGetString() {
-        String input = "Hello, World!";
-        InputStream stdin = System.in;
-        System.setIn(new ByteArrayInputStream(input.getBytes()));
-
-        String result = IOLibrary.getString();
-
-        System.setIn(stdin);
-
-        assertEquals(input, result);
+    void testGetString() throws IOException {
+        String testString = "Hello, World!";
+        InputStream inputStream = new ByteArrayInputStream(testString.getBytes());
+        System.setIn(inputStream);
+        String input = IOLibrary.getString();
+        assertEquals(testString, input);
     }
 
     @Test
-    void testGetIPAddress() {
-        String input = "192.168.0.1";
-        InputStream stdin = System.in;
-        System.setIn(new ByteArrayInputStream(input.getBytes()));
+    void testGetIPAddress() throws IOException {
+        String ipAddressString = "192.168.1.1";
+        InputStream inputStream = new ByteArrayInputStream(ipAddressString.getBytes());
+        System.setIn(inputStream);
+        InetAddress ipAddress = IOLibrary.getIPAddress();
+        assertEquals(ipAddressString, ipAddress.getHostAddress());
+    }
 
-        try {
-            InetAddress result = IOLibrary.getIPAddress();
-            InetAddress expected = InetAddress.getByName(input);
-
-            assertEquals(expected, result);
-        } catch (UnknownHostException e) {
-            fail("Failed to resolve IP address");
-        }
-
-        System.setIn(stdin);
+    @Test
+    void testInvalidIPAddressInput() {
+        String invalidIPAddressString = "invalid";
+        InputStream inputStream = new ByteArrayInputStream(invalidIPAddressString.getBytes());
+        System.setIn(inputStream);
+        assertThrows(Exception.class, IOLibrary::getIPAddress);
     }
 }
