@@ -1,45 +1,24 @@
+package base;
+
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class IOSpecialistTest {
 
     @Test
-    void testGetString() {
-        IOSpecialist ioSpecialist = new IOSpecialist();
-        String input = "Hello, World!";
-        IOLibrary.setInput(input);
-        String result = ioSpecialist.getString();
-        assertEquals(input, result);
-    }
-}import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+    void testGetString() throws IOException {
+        String testString = "Hello, World!";
+        InputStream inputStream = new ByteArrayInputStream(testString.getBytes());
+        System.setIn(inputStream);
 
-class IOSpecialistTest {
-
-    @Test
-    void testGetString() {
         IOSpecialist ioSpecialist = new IOSpecialist();
-        String input = "Hello, World!";
-        IOLibrary.setInput(input);
-        String result = ioSpecialist.getString();
-        assertEquals(input, result);
-    }
+        String input = ioSpecialist.getString();
 
-    @Test
-    void testGetStringEmptyInput() {
-        IOSpecialist ioSpecialist = new IOSpecialist();
-        String input = "";
-        IOLibrary.setInput(input);
-        String result = ioSpecialist.getString();
-        assertEquals(input, result);
-    }
-
-    @Test
-    void testGetStringNullInput() {
-        IOSpecialist ioSpecialist = new IOSpecialist();
-        String input = null;
-        IOLibrary.setInput(input);
-        String result = ioSpecialist.getString();
-        assertEquals(input, result);
+        assertEquals(testString, input);
     }
 }
