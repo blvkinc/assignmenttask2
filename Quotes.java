@@ -1,6 +1,6 @@
 package base;
 
-public class _Q {
+public class Quotes {
     private static final String[] QUOTES = {
         "Progress comes from the intelligent use of experience.", "Elbert Hubbard", "",
         "No amount of experimentation can ever prove me right; a single experiment can prove me wrong.", "Albert Einstein", "",

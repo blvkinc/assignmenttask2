@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class _QTest {
     @Test
     public void testGetQuotes() {
-        String[] quotes = _Q.getQuotes();
+        String[] quotes = Quotes.getQuotes();
 
         assertNotNull(quotes);
         assertEquals(26, quotes.length);
