@@ -5,24 +5,24 @@ import java.awt.*;
 
 public class PictureFrame {
 
-    private Main master;
-    private DominoPanel dp;
+    public int[] reroll = null;
+    public Main master = null;
 
     public PictureFrame(Main sf) {
         master = sf;
-        createAndShowGUI();
+        createFrame();
     }
 
-    private void createAndShowGUI() {
+    private void createFrame() {
         JFrame frame = new JFrame("Abominodo");
-        dp = new DominoPanel();
+        DominoPanel dp = new DominoPanel();
         frame.setContentPane(dp);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }
 
-    private class DominoPanel extends JPanel {
+    class DominoPanel extends JPanel {
         private static final long serialVersionUID = 4190229282411119364L;
 
         @Override
@@ -44,22 +44,50 @@ public class PictureFrame {
         }
 
         private void drawGridLines(Graphics g) {
-            // Drawing grid lines
-            // ... implementation ...
+            g.setColor(Color.LIGHT_GRAY);
+            for (int row = 0; row < 7; row++) {
+                for (int col = 0; col < 8; col++) {
+                    drawDigitGivenCentre(g, 30 + col * 20, 30 + row * 20, 20,
+                            master.grid[row][col]);
+                }
+            }
         }
 
         private void drawHeadings(Graphics g) {
-            // Drawing headings
-            // ... implementation ...
+            g.setColor(Color.BLACK);
+            for (int row = 0; row < 7; row++) {
+                fillDigitGivenCentre(g, 10, 30 + row * 20, 20, row + 1);
+            }
+            for (int col = 0; col < 8; col++) {
+                fillDigitGivenCentre(g, 30 + col * 20, 10, 20, col + 1);
+            }
         }
 
         private void drawGrid(Graphics g) {
-            // Drawing grid
-            // ... implementation ...
+            // Your grid drawing logic here
+        }
+
+        private void drawDigitGivenCentre(Graphics g, int x, int y, int diameter, int n) {
+            int radius = diameter / 2;
+            g.setColor(Color.BLACK);
+            FontMetrics fm = g.getFontMetrics();
+            String txt = Integer.toString(n);
+            g.drawString(txt, x - fm.stringWidth(txt) / 2, y + fm.getMaxAscent() / 2);
+        }
+
+        private void fillDigitGivenCentre(Graphics g, int x, int y, int diameter, int n) {
+            int radius = diameter / 2;
+            g.setColor(Color.GREEN);
+            g.fillOval(x - radius, y - radius, diameter, diameter);
+            g.setColor(Color.BLACK);
+            g.drawOval(x - radius, y - radius, diameter, diameter);
+            FontMetrics fm = g.getFontMetrics();
+            String txt = Integer.toString(n);
+            g.drawString(txt, x - fm.stringWidth(txt) / 2, y + fm.getMaxAscent() / 2);
         }
     }
 
     public void reset() {
-        // TODO: Implementation for reset method
+        // Reset functionality to be implemented
     }
 }
